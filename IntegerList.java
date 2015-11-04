@@ -1,5 +1,6 @@
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class IntegerList
     implements Collection<Integer> {
@@ -14,12 +15,35 @@ public class IntegerList
         }
     }
 
+    private class IntegerListIterator implements Iterator<Integer> {
+        private ListNode cursor; // next node returned by next()
+
+        private IntegerListIterator(ListNode head) {
+            cursor = head;
+        }
+
+        @Override
+        public Integer next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            ListNode current = cursor;
+            cursor = cursor.next;
+            return current.val;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cursor != null;
+        }
+    }
+
     private ListNode head = null;
 
     @Override
     public Iterator<Integer> iterator() {
-        // TODO
-        return null;
+        return new IntegerListIterator(head);
     }
 
     @Override
